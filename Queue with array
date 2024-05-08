@@ -1,0 +1,89 @@
+#include<iostream>
+using namespace std;
+#define size 10
+class Queue
+{
+public:
+   int array[size];
+    int rear;
+    int front;
+    Queue()
+    {
+        rear=front=-1;
+    }
+
+    void enque(int item)
+    {
+        if(rear==size-1)
+        {
+            cout<<"array is full"<<endl;
+        }
+        else
+        if(front==-1)
+        front=0;
+        rear++;
+        array[rear]=item;
+    }
+    void deque()
+    { int value;
+        if (front==-1)
+        {
+            cout<<"array is empty";
+        }
+            else 
+            {
+               value=array[front];
+               if(front==rear)
+               {
+                front=-1;
+                rear=-1;
+               } 
+               else{
+                front=front+1;
+               }
+               cout<<"deleted item "<<value<<endl;
+            }
+        
+    }
+    void display()
+    {
+        if (front==-1)
+        {
+            cout<<"stack is empty"<<endl;
+        }
+        else{
+            for(int i=front;i<=rear;i++)
+           cout<< array[i]<<" ";
+        }
+    }
+};
+int main()
+{
+  Queue q;
+  int choice,item;
+  cout<< "1-enque"<<endl<<"2-deque"<<endl<<"3-display"<<endl<<"4-exit"; 
+  while(1)
+  {
+    cout<<"enter the choice";
+    cin>>choice;
+    switch(choice)
+    {
+        case 1:
+        cout<<"enter the item";
+        cin>>item;
+        q.enque(item);
+        break;
+        case 2:
+        q.deque();
+        break;
+        case 3:
+        q.display();
+        break;
+        case 4:
+        return 0;
+        default:
+        cout<<"invalid choice";
+    }
+  }
+  return 0;
+}
