@@ -1,0 +1,73 @@
+#include <iostream>
+using namespace std;
+#define size 10
+
+class Stack {
+    private:
+    int top;
+    int stack[size];
+public:
+   Stack() {
+    top = -1;
+}
+
+
+    void push(int item) {
+        if (top == (size - 1)) {
+            cout << "stack overflow" << endl;
+        } else {
+            top = top + 1;
+            stack[top] = item;
+        }
+    }
+
+    void pop() {
+        if (top == -1) {
+            cout << "stack underflow or Empty" << endl;
+        } else {
+            cout << "deleted item is " << stack[top] << endl;
+            top = top - 1;
+        }
+    }
+
+    void display() {
+        if (top == -1) {
+            cout << "stack is empty" << endl;
+        } else {
+            for (int i = 0; i <= top; i++) {
+                cout << stack[i];
+            }
+            cout << endl;
+        }
+    }
+
+
+};
+
+int main() {
+    Stack sk;
+    int choice, item;
+    while (1) {
+        cout << "1-Push" << endl << "2-Pop" << endl << "3-display" << endl << "4-Exit" << endl;
+        cin >> choice;
+        switch (choice) {
+        case 1:
+            cout << "enter the element";
+            cin >> item;
+            sk.push(item);
+            break;
+        case 2:
+            sk.pop();
+            break;
+        case 3:
+            sk.display();
+            break;
+        case 4:
+            return 0;
+        default:
+            cout << "invalid input" << endl;
+            break;
+        }
+    }
+    return 0;
+}
