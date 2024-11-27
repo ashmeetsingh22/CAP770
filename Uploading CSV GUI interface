@@ -1,0 +1,75 @@
+import tkinter as tk
+from tkinter import filedialog, messagebox, ttk
+import pandas as pd
+import matplotlib.pyplot as plt
+
+class App:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("CSV Chart Generator")
+        self.root.geometry("400x300")
+        self.root.configure(bg="#f0f0f0")
+        
+        self.create_login_frame()
+
+    def create_login_frame(self):
+        self.login_frame = tk.Frame(self.root, bg="#f0f0f0")
+        self.login_frame.pack(pady=20)
+
+        tk.Label(self.login_frame, text="Username", bg="#f0f0f0", font=("Arial", 12)).grid(row=0, column=0, padx=10, pady=5)
+        self.username_entry = tk.Entry(self.login_frame, font=("Arial", 12))
+        self.username_entry.grid(row=0, column=1, padx=10, pady=5)
+
+        tk.Label(self.login_frame, text="Password", bg="#f0f0f0", font=("Arial", 12)).grid(row=1, column=0, padx=10, pady=5)
+        self.password_entry = tk.Entry(self.login_frame, show='*', font=("Arial", 12))
+        self.password_entry.grid(row=1, column=1, padx=10, pady=5)
+
+        tk.Button(self.login_frame, text="Login", command=self.login, bg="#4CAF50", fg="white", font=("Arial", 12)).grid(row=2, column=0, columnspan=2, pady=10)
+        tk.Button(self.login_frame, text="Register", command=self.register, bg="#2196F3", fg="white", font=("Arial", 12)).grid(row=3, column=0, columnspan=2, pady=10)
+
+    def login(self):
+        username = self.username_entry.get()
+        password = self.password_entry.get()
+        messagebox.showinfo("Login", f"Logged in as {username}")
+
+    def register(self):
+        username = self.username_entry.get()
+        password = self.password_entry.get()
+        messagebox.showinfo("Register", f"Registered as {username}")
+        self.create_upload_frame()
+
+    def create_upload_frame(self):
+        self.login_frame.pack_forget()
+        self.upload_frame = tk.Frame(self.root, bg="#f0f0f0")
+        self.upload_frame.pack(pady=20)
+
+        tk.Label(self.upload_frame, text="Upload CSV File", bg="#f0f0f0", font=("Arial", 12)).grid(row=0, column=0, padx=10, pady=5)
+        tk.Button(self.upload_frame, text="Browse", command=self.upload_csv, bg="#FF9800", fg="white", font=("Arial", 12)).grid(row=0, column=1, padx=10, pady=5)
+        
+        self.chart_type = tk.StringVar(value="line")
+        tk.Radiobutton(self.upload_frame, text="Line Chart", variable=self.chart_type, value="line", bg="#f0f0f0", font=("Arial", 12)).grid(row=1, column=0, padx=10, pady=5)
+        tk.Radiobutton(self.upload_frame, text="Bar Chart", variable=self.chart_type, value="bar", bg="#f0f0f0", font=("Arial", 12)).grid(row=1, column=1, padx=10, pady=5)
+        
+        tk.Button(self.upload_frame, text="Generate Chart", command=self.generate_chart, bg="#673AB7", fg="white", font=("Arial", 12)).grid(row=2, column=0, columnspan=2, pady=10)
+
+    def upload_csv(self):
+        self.file_path = filedialog.askopenfilename(filetypes=[("CSV files", "*.csv")])
+        if self.file_path:
+            messagebox.showinfo("File Upload", f"Uploaded file: {self.file_path}")
+
+    def generate_chart(self):
+        if hasattr(self, 'file_path'):
+            data = pd.read_csv(self.file_path)
+            if self.chart_type.get() == "line":
+                data.plot()
+            elif self.chart_type.get() == "bar":
+                data.plot(kind='bar')
+            plt.title("Generated Chart")
+            plt.show()
+        else:
+            messagebox.showwarning("Warning", "No file uploaded")
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = App(root)
+    root.mainloop()
